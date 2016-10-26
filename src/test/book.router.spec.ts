@@ -25,27 +25,7 @@ export class BookRouterTest {
 
 
 
-    @AsyncTest('should return json array')
-    @Timeout(5000)
-    public getAllBook() {
-        return new bluebird((resolve, reject) => {
-            this.request.get('/book')
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .expect((res: supertest.Response) => {
-                    Expect(res.body).toEqual(bookData)
-                })
-                .end((err, res) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                })
-                
-        })
-    }
-
+    
 
     @AsyncTest('should return book with name book1')
     @Timeout(5000)
