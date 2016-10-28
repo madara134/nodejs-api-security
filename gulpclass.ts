@@ -1,7 +1,6 @@
 import { Gulpclass, Task, SequenceTask } from 'gulpclass/Decorators';
 import gulp = require('gulp');
 import gts = require('gulp-typescript');
-// import * as browser_sync from 'browser-sync';
 import nodemon = require('gulp-nodemon');
 import uglify = require('gulp-uglify');
 import concat = require('gulp-concat');
@@ -9,6 +8,7 @@ import rename = require('gulp-rename');
 import del = require('del');
 import childp = require('child_process');
 import gutil = require('gulp-util');
+import * as bs from 'browser-sync';
 
 
 /**
@@ -34,8 +34,10 @@ export class Gulpfile {
     jsDest: string = 'dist';
     filesToMove: string[] = [
         './src/config/**/*.*',
-        './src/app/index.html',
-        './src/systemjs.config.js'
+        './src/client/index.html',
+        './src/systemjs.config.js',
+        './src/client/app/views/**/*.html',
+        './src/client/app/assets/**/*.*'
     ];
 
     /**
@@ -65,7 +67,7 @@ export class Gulpfile {
     @Task()
     nodemon(done: Function) {
         let callBackCalled = false;
-        return nodemon({ script: './dist/server.js', watch: ['src/**/*.ts','src/app/views/**/*.html'] }).on('start', () => {
+        return nodemon({ script: './dist/server.js', watch: ['src/api/**/*.ts'] }).on('start', () => {
             if (!callBackCalled) {
                 callBackCalled = true;
                 done();
@@ -73,14 +75,20 @@ export class Gulpfile {
         });
     }
 
-    /**
-     * task này sẽ chạy gulp.watch
-     * và nó sẽ giám sát sự thay đổi các file ts trong thư mục src
-     * và chạy task compile khi có sự thay đổi
-     */
     @Task()
-    watch(done: Function) {
-        gulp.watch(['src/**/*.ts','src/app/views/**/*.html'], ['compile']);
+    serve(done){
+        bs.init({
+            proxy: 'localhost:8080'
+        },(err,bs) => {
+            if(err){
+                console.error(err.message);
+            }
+        });
+
+        gulp.watch('src/client/index.html',['move',bs.reload])
+        gulp.watch(['src/app/**/*.ts'], ['compile']);
+        gulp.watch(['src/api/**/*.ts'], ['compile']);
+
         done();
     }
 
@@ -136,6 +144,6 @@ export class Gulpfile {
      */
     @SequenceTask()
     default() {
-        return ['compile','nodemon', 'watch'];
+        return ['compile','nodemon','serve'];
     }
 } 

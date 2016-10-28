@@ -3,7 +3,7 @@ import { Router, Response, Request } from 'express';
 
 
 // import các module tạo table
-import { BookRepo } from '../../repositories/book.repo';
+import { BookRepo } from '../repositories/book.repo';
 
 // khai báo router và export nó ra cho bên ngoài import vào
 

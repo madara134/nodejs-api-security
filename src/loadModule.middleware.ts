@@ -21,8 +21,12 @@ const htmlScripts = [
     express.static(path.join(__dirname))
 ]
 
+const htmlFiles = [
+    express.static(path.join(__dirname,'client','app','views'))
+]
+
 const othersLib = [
     express.static(path.join(__dirname,'..','node_modules','rxjs'))
 ]
 
-export {angularModule, htmlScripts, othersLib}
+export {angularModule, htmlScripts, othersLib, htmlFiles}
