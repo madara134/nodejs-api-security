@@ -2,7 +2,7 @@ import { Expect, Test, TestCase, AsyncTest, Setup, Teardown, Timeout } from 'als
 import * as supertest from 'supertest';
 import * as bluebird from 'bluebird';
 import { bookData } from './test.data';
-import app from '../app/app';
+import app from '../api/app';
 import { Server } from 'http';
 
 

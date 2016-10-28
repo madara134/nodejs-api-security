@@ -33,7 +33,9 @@ export class Gulpfile {
     // thư mục sẽ chứa các file js đã được compile
     jsDest: string = 'dist';
     filesToMove: string[] = [
-        './src/config/**/*.*'
+        './src/config/**/*.*',
+        './src/app/index.html',
+        './src/systemjs.config.js'
     ];
 
     /**
@@ -63,7 +65,7 @@ export class Gulpfile {
     @Task()
     nodemon(done: Function) {
         let callBackCalled = false;
-        return nodemon({ script: './dist/server.js', watch: ['dist'] }).on('start', () => {
+        return nodemon({ script: './dist/server.js', watch: ['src/**/*.ts','src/app/views/**/*.html'] }).on('start', () => {
             if (!callBackCalled) {
                 callBackCalled = true;
                 done();
@@ -78,7 +80,7 @@ export class Gulpfile {
      */
     @Task()
     watch(done: Function) {
-        gulp.watch('src/**/*.ts', ['compile']);
+        gulp.watch(['src/**/*.ts','src/app/views/**/*.html'], ['compile']);
         done();
     }
 
