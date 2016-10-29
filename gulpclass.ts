@@ -1,7 +1,6 @@
 import { Gulpclass, Task, SequenceTask } from 'gulpclass/Decorators';
 import gulp = require('gulp');
 import gts = require('gulp-typescript');
-// import * as browser_sync from 'browser-sync';
 import nodemon = require('gulp-nodemon');
 import uglify = require('gulp-uglify');
 import concat = require('gulp-concat');
@@ -9,6 +8,7 @@ import rename = require('gulp-rename');
 import del = require('del');
 import childp = require('child_process');
 import gutil = require('gulp-util');
+import * as bs from 'browser-sync';
 
 
 /**
@@ -33,7 +33,13 @@ export class Gulpfile {
     // thư mục sẽ chứa các file js đã được compile
     jsDest: string = 'dist';
     filesToMove: string[] = [
-        './src/config/**/*.*'
+        './src/config/**/*.*',
+        './src/client/index.html',
+        './src/systemjs.config.js',
+        './src/client/app/**/*.html',
+        './src/client/app/**/*.css',
+        './src/client/app/assets/**/*.*',
+        './src/api/json/**/*.json'
     ];
 
     /**
@@ -63,7 +69,7 @@ export class Gulpfile {
     @Task()
     nodemon(done: Function) {
         let callBackCalled = false;
-        return nodemon({ script: './dist/server.js', watch: ['dist'] }).on('start', () => {
+        return nodemon({ script: './dist/server.js', watch: ['dist/api/**/*.js'] }).on('start', () => {
             if (!callBackCalled) {
                 callBackCalled = true;
                 done();
@@ -71,14 +77,21 @@ export class Gulpfile {
         });
     }
 
-    /**
-     * task này sẽ chạy gulp.watch
-     * và nó sẽ giám sát sự thay đổi các file ts trong thư mục src
-     * và chạy task compile khi có sự thay đổi
-     */
     @Task()
-    watch(done: Function) {
-        gulp.watch('src/**/*.ts', ['compile']);
+    serve(done){
+        bs.init({
+            proxy: 'localhost:8080'
+        },(err,bs) => {
+            if(err){
+                console.error(err.message);
+            }
+        });
+
+        gulp.watch('src/client/**/*.html',['move',bs.reload])
+        gulp.watch('src/client/**/*.css',['move',bs.reload])
+        gulp.watch(['src/client/**/*.ts'], ['compile',bs.reload]);
+        gulp.watch(['src/api/**/*.ts'], ['compile',bs.reload]);
+
         done();
     }
 
@@ -134,6 +147,6 @@ export class Gulpfile {
      */
     @SequenceTask()
     default() {
-        return ['compile','nodemon', 'watch'];
+        return ['compile','nodemon','serve'];
     }
 } 

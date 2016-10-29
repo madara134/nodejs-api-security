@@ -1,14 +1,11 @@
 // đây là vùng import tất cả các modules bên ngoài
 import { Router, Response, Request } from 'express';
 
-
+import path = require('path');
 // import các module tạo table
 import { BookRepo } from '../repositories/book.repo';
 
-// khai báo router và export nó ra cho bên ngoài import vào
-
-
-// lấy table cần thiết
+let mockProduct = require(path.join(__dirname,'..','json','products.json'));
 
 
 
@@ -28,7 +25,8 @@ export class BookRouter {
 
     public getRouter(): Router {
 
-        this.router.route('/book').get(this.getAllBook)
+        this.router.route('/book')
+            .get(this.getAllBook)
             .post(this.createABook)
             .delete(this.deleteABook);
         
@@ -39,16 +37,19 @@ export class BookRouter {
     }
 
     private getAllBook = (req: Request, res: Response) => {
-        let object={ id: 1, name: 'book1' };
 
-        this.bookRepo.getList(null)
-            .then(result => {
-                res.status(200).json(result)
-            })
-            .catch(error => {
-                console.error(error.message);
-                res.status(500).send(error.message)
-            })
+        res.status(200).json(mockProduct);
+
+        // let object={ id: 1, name: 'book1' };
+
+        // this.bookRepo.getList(null)
+        //     .then(result => {
+        //         res.status(200).json(result)
+        //     })
+        //     .catch(error => {
+        //         console.error(error.message);
+        //         res.status(500).send(error.message)
+        //     })
     }
 
     private countBook = (req: Request,res: Response) => {
