@@ -4,7 +4,7 @@ import 'rxjs/Rx';   // Load all features
 import { Route, RouterModule} from '@angular/router';
 
 
-import { ProductService } from './products/product.service';
+import { ProductService } from './products/shared/product.service';
 
 @Component({
     selector: 'my-app',

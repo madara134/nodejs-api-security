@@ -5,7 +5,7 @@ import path = require('path');
 // import các module tạo table
 import { BookRepo } from '../repositories/book.repo';
 
-let mockProduct = require(path.join(__dirname,'..','products','products.json'));
+let mockProduct = require(path.join(__dirname,'..','json','products.json'));
 
 
 
@@ -25,7 +25,8 @@ export class BookRouter {
 
     public getRouter(): Router {
 
-        this.router.route('/book').get(this.getAllBook)
+        this.router.route('/book')
+            .get(this.getAllBook)
             .post(this.createABook)
             .delete(this.deleteABook);
         

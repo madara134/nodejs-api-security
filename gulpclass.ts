@@ -39,7 +39,7 @@ export class Gulpfile {
         './src/client/app/**/*.html',
         './src/client/app/**/*.css',
         './src/client/app/assets/**/*.*',
-        './src/api/products/products.json'
+        './src/api/json/**/*.json'
     ];
 
     /**

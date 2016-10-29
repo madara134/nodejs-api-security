@@ -2,7 +2,7 @@ import * as PG from 'pg';
 import { Promise } from 'es6-promise';
 import path = require('path');
 let env = process.env.NODE_ENV || 'development';
-let config = require(path.join(__dirname,'..','config','config.json'))[env];
+let config = require(path.join(__dirname,'..','config','database.config.json'))[env];
 
 export let RemoveDatabase = () => {
     return new Promise((resolve, reject) => {
