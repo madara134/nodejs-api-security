@@ -36,8 +36,10 @@ export class Gulpfile {
         './src/config/**/*.*',
         './src/client/index.html',
         './src/systemjs.config.js',
-        './src/client/app/views/**/*.html',
-        './src/client/app/assets/**/*.*'
+        './src/client/app/**/*.html',
+        './src/client/app/**/*.css',
+        './src/client/app/assets/**/*.*',
+        './src/api/products/products.json'
     ];
 
     /**
@@ -67,7 +69,7 @@ export class Gulpfile {
     @Task()
     nodemon(done: Function) {
         let callBackCalled = false;
-        return nodemon({ script: './dist/server.js', watch: ['src/api/**/*.ts'] }).on('start', () => {
+        return nodemon({ script: './dist/server.js', watch: ['dist/api/**/*.js'] }).on('start', () => {
             if (!callBackCalled) {
                 callBackCalled = true;
                 done();
@@ -85,9 +87,10 @@ export class Gulpfile {
             }
         });
 
-        gulp.watch('src/client/index.html',['move',bs.reload])
-        gulp.watch(['src/app/**/*.ts'], ['compile']);
-        gulp.watch(['src/api/**/*.ts'], ['compile']);
+        gulp.watch('src/client/**/*.html',['move',bs.reload])
+        gulp.watch('src/client/**/*.css',['move',bs.reload])
+        gulp.watch(['src/client/**/*.ts'], ['compile',bs.reload]);
+        gulp.watch(['src/api/**/*.ts'], ['compile',bs.reload]);
 
         done();
     }

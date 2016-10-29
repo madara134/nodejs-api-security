@@ -1,13 +1,29 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {LocationStrategy,HashLocationStrategy, PathLocationStrategy} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
 
 import {routing} from './app.routing.module';
 import {AppComponent} from './app.component';
-import {BookListComponent} from './book-list/book-list.component';
+import {BookListComponent} from './books/book-list/book-list.component';
+import {BookDetailComponent} from './books/book-detail/book-detail.component';
+import { ProductListComponent } from './products/product-list.component';
+import { ProductService } from './products/product.service';
+import { WelcomeComponent } from './home/welcome.component';
+import { ProductDetailComponent } from './products/product-detail.component';
+import {ProductFilterPipe} from './products/product-filter.pipe'
 
 @NgModule({
-    imports: [BrowserModule,routing],
-    declarations: [AppComponent,BookListComponent],
+    imports: [BrowserModule,routing,FormsModule,HttpModule],
+    providers: [{provide: LocationStrategy, useClass: HashLocationStrategy},ProductService],
+    declarations: [AppComponent,
+    BookListComponent,
+    BookDetailComponent,
+    WelcomeComponent,
+    ProductDetailComponent,
+    ProductListComponent,
+    ProductFilterPipe],
     bootstrap: [AppComponent]
 })
 export class AppModule{}

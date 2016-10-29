@@ -13,20 +13,25 @@ const angularModule = [
     express.static(path.join(__dirname,'..','node_modules','@angular','forms','bundles'))
 ]
 
-const htmlScripts = [
+const javaScripts = [
     express.static(path.join(__dirname,'..','node_modules','core-js','client')),
     express.static(path.join(__dirname,'..','node_modules','zone.js','dist')),
     express.static(path.join(__dirname,'..','node_modules','reflect-metadata')),
     express.static(path.join(__dirname,'..','node_modules','systemjs','dist')),
+    express.static(path.join(__dirname,'client','app','assets')),
     express.static(path.join(__dirname))
 ]
 
 const htmlFiles = [
-    express.static(path.join(__dirname,'client','app','views'))
+    express.static(path.join(__dirname,'client','app'))
+]
+
+const cssFiles= [
+    express.static(path.join(__dirname,'client','app','assets'))
 ]
 
 const othersLib = [
     express.static(path.join(__dirname,'..','node_modules','rxjs'))
 ]
 
-export {angularModule, htmlScripts, othersLib, htmlFiles}
+export {angularModule, javaScripts, othersLib, htmlFiles, cssFiles}
